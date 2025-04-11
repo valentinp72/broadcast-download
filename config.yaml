@@ -1,0 +1,10 @@
+channels:
+  - name: "France Inter"
+    start: 2025-04-12 08:00:00 +2
+    stop: 2025-04-12 12:00:00 +2
+  - name: "France Culture"
+    start: 2025-04-12 09:00:00 +2
+    stop: 2025-04-12 12:00:00 +2
+  - name: "Nouvelle-Calédonie La Première"
+    start: 2025-04-12 08:00:00 +11
+    stop: 2025-04-12 12:00:00 +11
