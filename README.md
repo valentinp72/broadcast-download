@@ -4,7 +4,7 @@ Script used to programmatically download multiple radio streams at a given time.
 
 ## Requirements:
 - python3
-- ffmpeg
+- [`ffmpeg`](https://ffmpeg.org/download.html)
 - Optional: [`pyradios`](https://pypi.org/project/pyradios/) (used to get streaming URL from a given radio name)
 
 
