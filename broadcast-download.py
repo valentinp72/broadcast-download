@@ -34,7 +34,6 @@ import logging
 import subprocess
 import multiprocessing
 from datetime import datetime, timedelta, timezone
-from pyradios import RadioBrowser
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(
@@ -43,6 +42,16 @@ logging.basicConfig(
     datefmt='%Y-%m-%d %H:%M:%S'
 )
 logger.info(args)
+
+try:
+    from pyradios import RadioBrowser
+    has_radio_browser = True
+except ImportError:
+    logger.warning(
+        "Could not load pyradios to use radio-browser. Channels will have " \
+        "to specify the stream URL inside the config file!"
+    )
+    has_radio_browser = False
 
 config = yaml.safe_load(args.config)
 logger.info(config)
@@ -62,13 +71,19 @@ def seconds_to_hhmmss(seconds):
     seconds = seconds % 60
     return f"{hours:02d}:{minutes:02d}:{seconds:02d}"
 
-def record_channel(channel):
+def get_url(channel):
     prefix = f"[{channel['name']}] "
-    until = channel['start'] - timedelta(seconds=args.collar_seconds)
-    logger.info(f"{prefix}Waiting until {until}...")
-    wait_until(until)
-    rb = RadioBrowser()
 
+    if 'url' in channel:
+        # you can directly specify the url to the stream
+        return {}, channel['url']
+
+    if not has_radio_browser:
+        raise ValueError(
+            "RadioBrowser (pyradios) is not installed, and I don't know the " \
+            "URL to that radio."
+        )
+    rb = RadioBrowser()
     if 'uuid' in channel:
         result = rb.station_by_uuid(channel['uuid'])
     else:
@@ -76,13 +91,33 @@ def record_channel(channel):
 
     logger.info(f"{prefix}Found {len(result)} stations.")
     if len(result) == 0:
-        logger.error(f"{prefix}No stations found, not recording!")
-        return False
+        raise ValueError(
+            "No stations found, not recording!"
+        )
     elif len(result) > 1:
         logger.warning(f"{prefix}Multiple stations available, will take the one with the most votes.")
 
     result = result[-1]
     url = result['url']
+
+    return result, url
+
+def record_channel(channel):
+    prefix = f"[{channel['name']}] "
+
+    if 'start' not in channel or 'stop' not in channel:
+        logger.info(f"{prefix}Not start/stop, ignoring.")
+        return False
+
+    until = channel['start'] - timedelta(seconds=args.collar_seconds)
+    logger.info(f"{prefix}Waiting until {until}...")
+    wait_until(until)
+
+    try:
+        result, url = get_url(channel)
+    except ValueError as e:
+        logger.error(f"{prefix}{e.args[0]}")
+        return False
     logger.info(f"{prefix}Selected the broadcast with UUID={result['stationuuid']} and URL={url}.")
 
     now = datetime.now(timezone.utc)
