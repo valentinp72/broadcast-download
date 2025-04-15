@@ -32,6 +32,7 @@ parser.add_argument(
 args = parser.parse_args()
 
 import os
+import sys
 import json
 import yaml
 import time
@@ -63,6 +64,13 @@ logger.info(config)
 
 os.makedirs(args.save_dir, exist_ok=True)
 os.makedirs(args.log_dir, exist_ok=True)
+
+def resource_path(relative_path):
+    if relative_path.startswith('/'):
+        return relative_path
+    if hasattr(sys, '_MEIPASS'):
+        return os.path.join(sys._MEIPASS, relative_path)
+    return os.path.join(os.path.abspath("."), relative_path)
 
 def wait_until(until):
     while until > datetime.now(timezone.utc):
@@ -142,7 +150,7 @@ def record_channel(channel):
 
     logging.info(f"{prefix}Starting saving into {target_file}. Will run for {hhmmss}.")
     command = [
-        args.ffmpeg_binary,
+        resource_path(args.ffmpeg_binary),
         "-loglevel", "warning",
         "-y",
         "-i", url,
