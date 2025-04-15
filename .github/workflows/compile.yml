@@ -51,6 +51,11 @@ jobs:
         if: matrix.os == 'ubuntu-22.04' || matrix.os == 'macos-latest'
         run: |
           mv dist/broadcast-download dist/broadcast-download-${{ matrix.os }}
+      
+      - name: Rename artifact to include distribution name
+        if: matrix.os == 'windows-latest'
+        run: |
+          mv dist/broadcast-download.exe dist/broadcast-download-${{ matrix.os }}.exe
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
