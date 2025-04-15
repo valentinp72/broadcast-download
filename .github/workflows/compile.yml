@@ -83,7 +83,7 @@ jobs:
         with:
           files: |
             artifacts/broadcast-download-ubuntu-22.04/broadcast-download-ubuntu-22.04
-            artifacts/broadcast-download-windows-latest/broadcast-download.exe
+            artifacts/broadcast-download-windows-latest/broadcast-download-windows-latest.exe
             artifacts/broadcast-download-macos-latest/broadcast-download-macos-latest
           tag_name: v${{ github.run_number }}
           name: Release v${{ github.run_number }}
