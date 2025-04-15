@@ -1,4 +1,12 @@
 channels:
+  - name: "HitWest Nantes"
+    url: https://stream.rcs.revma.com/42hpctu59k3vv
+    start: 2025-04-15 08:00:00 +2
+    stop: 2025-04-15 13:00:00 +2
+  - name: "HitWest Rennes"
+    url: https://stream.rcs.revma.com/nvsuedfwcy3vv
+    start: 2025-04-15 08:00:00 +2
+    stop: 2025-04-15 13:00:00 +2
   - name: "Radio Classique"
     url: https://str0.creacast.com/classique1
   - name: "France Inter"
