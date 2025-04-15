@@ -17,7 +17,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-20.04, windows-latest, macos-latest]
+        os: [ubuntu-22.04, windows-latest, macos-latest]
 
     steps:
       - name: Checkout code
@@ -39,10 +39,16 @@ jobs:
 
       - name: Build with PyInstaller
         run: |
-          pyinstaller --onefile --add-binary "${{ runner.tool_cache }}/FFmpeg/ffmpeg:." broadcast-download.py
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            FFMPEG_PATH=$(where ffmpeg)
+          else
+            FFMPEG_PATH=$(which ffmpeg)
+          fi
+          pyinstaller --onefile --add-binary "$FFMPEG_PATH:." broadcast-download.py
+        shell: bash
 
       - name: Rename artifact to include distribution name
-        if: matrix.os == 'ubuntu-20.04' || matrix.os == 'macos-latest'
+        if: matrix.os == 'ubuntu-22.04' || matrix.os == 'macos-latest'
         run: |
           mv dist/broadcast-download dist/broadcast-download-${{ matrix.os }}
 
@@ -71,7 +77,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            artifacts/broadcast-download-ubuntu-20.04/broadcast-download-ubuntu-20.04
+            artifacts/broadcast-download-ubuntu-22.04/broadcast-download-ubuntu-22.04
             artifacts/broadcast-download-windows-latest/broadcast-download.exe
             artifacts/broadcast-download-macos-latest/broadcast-download-macos-latest
           tag_name: v${{ github.run_number }}
