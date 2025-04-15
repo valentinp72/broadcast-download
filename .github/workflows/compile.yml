@@ -42,7 +42,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: broadcast-download-${{ matrix.os }}
-          path: 'dist/broadcast-download'
+          path: ${{ runner.os == 'Windows' && 'dist\\broadcast-download.exe' || 'dist/broadcast-download' }}
 
   release:
     needs: build
