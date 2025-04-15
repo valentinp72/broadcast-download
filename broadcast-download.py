@@ -4,7 +4,12 @@ import argparse
 
 parser = argparse.ArgumentParser(
     description='Script used to automatically download a broadcast radio ' \
-    'at a given time.'
+    'at a given time.',
+    formatter_class=argparse.ArgumentDefaultsHelpFormatter
+)
+parser.add_argument(
+    '--ffmpeg_binary', type=str, default='ffmpeg',
+    help='Path to the ffmpeg binary used to download.'
 )
 parser.add_argument(
     '--config', type=argparse.FileType('r'), default='config.yaml',
@@ -76,7 +81,7 @@ def get_url(channel):
 
     if 'url' in channel:
         # you can directly specify the url to the stream
-        return {}, channel['url']
+        return {'url': channel['url']}, channel['url']
 
     if not has_radio_browser:
         raise ValueError(
@@ -137,7 +142,7 @@ def record_channel(channel):
 
     logging.info(f"{prefix}Starting saving into {target_file}. Will run for {hhmmss}.")
     command = [
-        "ffmpeg",
+        args.ffmpeg_binary,
         "-loglevel", "warning",
         "-y",
         "-i", url,
