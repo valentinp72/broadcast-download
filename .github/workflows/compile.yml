@@ -42,7 +42,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: broadcast-download-${{ matrix.os }}
-          path: dist/broadcast-download
+          path: 'dist/broadcast-download'
 
   release:
     needs: build
@@ -67,7 +67,7 @@ jobs:
             artifacts/broadcast-download-windows-latest/broadcast-download.exe
             artifacts/broadcast-download-macos-latest/broadcast-download
           tag_name: v${{ github.run_number }}
-          release_name: Release v${{ github.run_number }}
+          name: Release v${{ github.run_number }}
           draft: false
           prerelease: false
         env:
