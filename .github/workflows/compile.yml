@@ -39,13 +39,18 @@ jobs:
 
       - name: Build with PyInstaller
         run: |
-          pyinstaller --onefile --add-data "${{ runner.tool_cache }}/FFmpeg/*:./ffmpeg/" broadcast-download.py
+          pyinstaller --onefile --add-binary "${{ runner.tool_cache }}/FFmpeg/ffmpeg:." broadcast-download.py
+
+      - name: Rename artifact to include distribution name
+        if: matrix.os == 'ubuntu-20.04' || matrix.os == 'macos-latest'
+        run: |
+          mv dist/broadcast-download dist/broadcast-download-${{ matrix.os }}
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: broadcast-download-${{ matrix.os }}
-          path: ${{ runner.os == 'Windows' && 'dist\\broadcast-download.exe' || 'dist/broadcast-download' }}
+          path: dist/broadcast-download*
 
   release:
     needs: build
@@ -66,9 +71,9 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            artifacts/broadcast-download-ubuntu-20.04/broadcast-download
+            artifacts/broadcast-download-ubuntu-20.04/broadcast-download-ubuntu-20.04
             artifacts/broadcast-download-windows-latest/broadcast-download.exe
-            artifacts/broadcast-download-macos-latest/broadcast-download
+            artifacts/broadcast-download-macos-latest/broadcast-download-macos-latest
           tag_name: v${{ github.run_number }}
           name: Release v${{ github.run_number }}
           draft: false
