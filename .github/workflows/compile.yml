@@ -44,58 +44,6 @@ jobs:
           name: broadcast-download-${{ matrix.os }}
           path: dist/broadcast-download
 
-
-You're correct. The current setup will create separate releases for each operating system because the Create Release step is inside the matrix strategy, which runs independently for each OS. To create a single release and upload artifacts from all operating systems to that release, you need to separate the release creation from the artifact uploads.
-
-Here's how you can modify the workflow to achieve this:
-
-name: Build with PyInstaller
-
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-
-jobs:
-  build:
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        os: [ubuntu-20.04, windows-latest, macos-latest]
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10.10'
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install pyinstaller
-          pip install -r requirements.txt
-
-      - name: Install ffmpeg
-        uses: AnimMouse/setup-ffmpeg@v1
-
-      - name: Build with PyInstaller
-        run: |
-          which ffmpeg
-          pyinstaller --onefile --add-data "${{ runner.tool_cache }}/FFmpeg/*:./ffmpeg/" broadcast-download.py
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: broadcast-download-${{ matrix.os }}
-          path: dist/broadcast-download
-
   release:
     needs: build
     runs-on: ubuntu-latest
