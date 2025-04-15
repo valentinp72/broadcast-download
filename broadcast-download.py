@@ -118,7 +118,7 @@ def record_channel(channel):
     except ValueError as e:
         logger.error(f"{prefix}{e.args[0]}")
         return False
-    logger.info(f"{prefix}Selected the broadcast with UUID={result['stationuuid']} and URL={url}.")
+    logger.info(f"{prefix}Selected the broadcast with UUID={result.get('stationuuid', '')} and URL={url}.")
 
     now = datetime.now(timezone.utc)
     duration = int(
