@@ -68,12 +68,12 @@ jobs:
       - name: Test linux/macos
         if: matrix.os == 'ubuntu-22.04' || matrix.os == 'macos-latest'
         run: |
-          ./dist/broadcast-download-${{ matrix.os }} --config ./config.yaml
+          ./dist/broadcast-download-${{ matrix.os }} --config ./config.yaml --debug
       
       - name: Test windows 
         if: matrix.os == 'windows-latest'
         run: |
-          ./dist/broadcast-download-${{ matrix.os }}.exe --config ./config.yaml
+          ./dist/broadcast-download-${{ matrix.os }}.exe --config ./config.yaml --debug
 
   release:
     needs: build

@@ -156,19 +156,31 @@ if __name__ == "__main__":
         '--log_dir', type=str, default='logs',
         help='Specify a directory for the logs.'
     )
+    parser.add_argument(
+        '--debug', action='store_true',
+        help='If set, will only download recordings for maximum 10s.'
+    )
 
     args = parser.parse_args()
     logger.info(args)
 
     config = yaml.safe_load(args.config)
+    channels = config['channels']
     logger.info(config)
+
+    if args.debug:
+        logger.info("Enabled debug mode! Will record 10s for each channel.")
+        for c in channels:
+            if 'start' in c and 'stop' in c:
+                c['start'] = datetime.now(timezone.utc)
+                c['stop'] = datetime.now(timezone.utc) + timedelta(seconds=10)
+        args.collar_seconds = 0
 
     os.makedirs(args.save_dir, exist_ok=True)
     os.makedirs(args.log_dir, exist_ok=True)
 
     logger.info("Starting the workers!")
-    channels = config['channels']
-    safe_args = argparse.Namespace(**{k: getattr(args, k) for k in ['ffmpeg_binary', 'collar_seconds', 'save_dir', 'log_dir']})
+    safe_args = argparse.Namespace(**{k: getattr(args, k) for k in ['ffmpeg_binary', 'collar_seconds', 'save_dir', 'log_dir', 'debug']})
     with multiprocessing.Pool(processes=len(channels)) as p:
         correct = p.starmap(record_channel, zip(channels, repeat(safe_args)))
 
