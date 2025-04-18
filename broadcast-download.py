@@ -105,7 +105,7 @@ def record_channel(channel, args):
         logger.error(f"{prefix}Requested duration is < 0 seconds. Are we running late?")
         return False
     hhmmss = seconds_to_hhmmss(duration)
-    name = f"{channel['name'].replace(' ', '-')}:{now.strftime('%Y%m%dT%H%M%S')}:{duration}"
+    name = f"{channel['name'].replace(' ', '-')}_{now.strftime('%Y%m%dT%H%M%S')}_{duration}"
     target_file = os.path.join(args.save_dir, f"{name}.wav")
 
     with open(os.path.join(args.log_dir, f"{name}.json"), 'w') as f:
