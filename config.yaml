@@ -9,22 +9,36 @@ channels:
     stop: 2025-04-15 13:00:00 +2
   - name: "Radio Classique"
     url: https://str0.creacast.com/classique1
+    start: 2025-04-15 08:00:00 +2
+    stop: 2025-04-15 13:00:00 +2
   - name: "France Inter"
     url: http://direct.franceinter.fr/live/franceinter-hifi.aac
     start: 2025-04-12 08:00:00 +2
     stop: 2025-04-18 12:00:00 +2
   - name: "RTL"
     url: http://streaming.radio.rtl.fr/rtl-1-44-128
+    start: 2025-04-15 08:00:00 +2
+    stop: 2025-04-15 13:00:00 +2
   - name: "BFM Business"
     url: http://audio.bfmtv.com/bfmbusiness_128.mp3?aw_0_1st.playerId=BFMBusiness_audio_web&aggregator=BFMBusiness_audio_web
+    start: 2025-04-15 08:00:00 +2
+    stop: 2025-04-15 13:00:00 +2
   - name: "RMC FR"
     url: https://audio.bfmtv.com/rmcradio_128.mp3
+    start: 2025-04-15 08:00:00 +2
+    stop: 2025-04-15 13:00:00 +2
   - name: "France Info"
     url: http://direct.franceinfo.fr/live/franceinfo-hifi.aac
+    start: 2025-04-15 08:00:00 +2
+    stop: 2025-04-15 13:00:00 +2
   - name: "Europe 1"
     url: http://stream.europe1.fr/europe1.aac
+    start: 2025-04-15 08:00:00 +2
+    stop: 2025-04-15 13:00:00 +2
   - name: "France Bleu Azur"
     url: http://direct.francebleu.fr/live/fbazur-midfi.mp3
+    start: 2025-04-15 08:00:00 +2
+    stop: 2025-04-15 13:00:00 +2
   - name: "France Culture"
     url: http://icecast.radiofrance.fr/franceculture-hifi.aac
     start: 2025-04-12 09:00:00 +2
