@@ -50,11 +50,13 @@ jobs:
       - name: Rename artifact to include distribution name
         if: matrix.os == 'ubuntu-22.04' || matrix.os == 'macos-latest'
         run: |
+          chmod +x dist/broadcast-download
           mv dist/broadcast-download dist/broadcast-download-${{ matrix.os }}
       
       - name: Rename artifact to include distribution name
         if: matrix.os == 'windows-latest'
         run: |
+          chmod +x dist/broadcast-download.exe
           mv dist/broadcast-download.exe dist/broadcast-download-${{ matrix.os }}.exe
 
       - name: Upload artifacts
@@ -62,6 +64,16 @@ jobs:
         with:
           name: broadcast-download-${{ matrix.os }}
           path: dist/broadcast-download*
+
+      - name: Test linux/macos
+        if: matrix.os == 'ubuntu-22.04' || matrix.os == 'macos-latest'
+        run: |
+          ./dist/broadcast-download-${{ matrix.os }} --config ./config.yaml
+      
+      - name: Test windows 
+        if: matrix.os == 'windows-latest'
+        run: |
+          ./dist/broadcast-download-${{ matrix.os }}.exe --config ./config.yaml
 
   release:
     needs: build

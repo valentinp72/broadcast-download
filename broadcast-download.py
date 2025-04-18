@@ -1,36 +1,5 @@
 #!/usr/bin/env python3
 
-import argparse
-
-parser = argparse.ArgumentParser(
-    description='Script used to automatically download a broadcast radio ' \
-    'at a given time.',
-    formatter_class=argparse.ArgumentDefaultsHelpFormatter
-)
-parser.add_argument(
-    '--ffmpeg_binary', type=str, default='ffmpeg',
-    help='Path to the ffmpeg binary used to download.'
-)
-parser.add_argument(
-    '--config', type=argparse.FileType('r'), default='config.yaml',
-    help='File containing the configuration (channels and required times).'
-)
-parser.add_argument(
-    '--collar_seconds', type=int, default=600,
-    help='How many seconds before and after the required times should we ' \
-    'start / stop the recording.'
-)
-parser.add_argument(
-    '--save_dir', type=str, default='recordings',
-    help='Specify a downloading directory for the recordings.'
-)
-parser.add_argument(
-    '--log_dir', type=str, default='logs',
-    help='Specify a directory for the logs.'
-)
-
-args = parser.parse_args()
-
 import os
 import sys
 import json
@@ -39,6 +8,7 @@ import time
 import logging
 import subprocess
 import multiprocessing
+from itertools import repeat
 from datetime import datetime, timedelta, timezone
 
 logger = logging.getLogger(__name__)
@@ -47,7 +17,6 @@ logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s',
     datefmt='%Y-%m-%d %H:%M:%S'
 )
-logger.info(args)
 
 try:
     from pyradios import RadioBrowser
@@ -58,12 +27,6 @@ except ImportError:
         "to specify the stream URL inside the config file!"
     )
     has_radio_browser = False
-
-config = yaml.safe_load(args.config)
-logger.info(config)
-
-os.makedirs(args.save_dir, exist_ok=True)
-os.makedirs(args.log_dir, exist_ok=True)
 
 def resource_path(relative_path):
     if relative_path.startswith('/'):
@@ -115,7 +78,7 @@ def get_url(channel):
 
     return result, url
 
-def record_channel(channel):
+def record_channel(channel, args):
     prefix = f"[{channel['name']}] "
 
     if 'start' not in channel or 'stop' not in channel:
@@ -148,7 +111,7 @@ def record_channel(channel):
     with open(os.path.join(args.log_dir, f"{name}.json"), 'w') as f:
         json.dump(result, fp=f, indent=True, ensure_ascii=False)
 
-    logging.info(f"{prefix}Starting saving into {target_file}. Will run for {hhmmss}.")
+    logging.info(f"{prefix}[Recording] Starting saving into {target_file}. Will run for {hhmmss}.")
     command = [
         resource_path(args.ffmpeg_binary),
         "-loglevel", "warning",
@@ -164,13 +127,52 @@ def record_channel(channel):
     return True
 
 if __name__ == "__main__":
+    multiprocessing.freeze_support()
+    import argparse
+
+    parser = argparse.ArgumentParser(
+        description='Script used to automatically download a broadcast radio ' \
+        'at a given time.',
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter
+    )
+    parser.add_argument(
+        '--ffmpeg_binary', type=str, default='ffmpeg',
+        help='Path to the ffmpeg binary used to download.'
+    )
+    parser.add_argument(
+        '--config', type=argparse.FileType('r'), default='config.yaml',
+        help='File containing the configuration (channels and required times).'
+    )
+    parser.add_argument(
+        '--collar_seconds', type=int, default=600,
+        help='How many seconds before and after the required times should we ' \
+        'start / stop the recording.'
+    )
+    parser.add_argument(
+        '--save_dir', type=str, default='recordings',
+        help='Specify a downloading directory for the recordings.'
+    )
+    parser.add_argument(
+        '--log_dir', type=str, default='logs',
+        help='Specify a directory for the logs.'
+    )
+
+    args = parser.parse_args()
+    logger.info(args)
+
+    config = yaml.safe_load(args.config)
+    logger.info(config)
+
+    os.makedirs(args.save_dir, exist_ok=True)
+    os.makedirs(args.log_dir, exist_ok=True)
+
     logger.info("Starting the workers!")
     channels = config['channels']
+    safe_args = argparse.Namespace(**{k: getattr(args, k) for k in ['ffmpeg_binary', 'collar_seconds', 'save_dir', 'log_dir']})
     with multiprocessing.Pool(processes=len(channels)) as p:
-        correct = p.map(record_channel, channels)
+        correct = p.starmap(record_channel, zip(channels, repeat(safe_args)))
 
     logger.info(
         f"All processes have finished. Correct? "\
         f"{dict(zip((x['name'] for x in channels), correct))}"
     )
-
