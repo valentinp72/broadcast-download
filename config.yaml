@@ -1,49 +1,49 @@
 channels:
-  - name: "HitWest Nantes"
-    url: https://stream.rcs.revma.com/42hpctu59k3vv
-    start: 2025-04-15 08:00:00 +2
-    stop: 2025-04-15 13:00:00 +2
-  - name: "HitWest Rennes"
-    url: https://stream.rcs.revma.com/nvsuedfwcy3vv
-    start: 2025-04-15 08:00:00 +2
-    stop: 2025-04-15 13:00:00 +2
-  - name: "Radio Classique"
-    url: https://str0.creacast.com/classique1
-    start: 2025-04-15 08:00:00 +2
-    stop: 2025-04-15 13:00:00 +2
-  - name: "France Inter"
-    url: http://direct.franceinter.fr/live/franceinter-hifi.aac
-    start: 2025-04-12 08:00:00 +2
-    stop: 2025-04-18 12:00:00 +2
-  - name: "RTL"
-    url: http://streaming.radio.rtl.fr/rtl-1-44-128
-    start: 2025-04-15 08:00:00 +2
-    stop: 2025-04-15 13:00:00 +2
-  - name: "BFM Business"
-    url: http://audio.bfmtv.com/bfmbusiness_128.mp3?aw_0_1st.playerId=BFMBusiness_audio_web&aggregator=BFMBusiness_audio_web
-    start: 2025-04-15 08:00:00 +2
-    stop: 2025-04-15 13:00:00 +2
-  - name: "RMC FR"
-    url: https://audio.bfmtv.com/rmcradio_128.mp3
-    start: 2025-04-15 08:00:00 +2
-    stop: 2025-04-15 13:00:00 +2
   - name: "France Info"
     url: http://direct.franceinfo.fr/live/franceinfo-hifi.aac
-    start: 2025-04-15 08:00:00 +2
-    stop: 2025-04-15 13:00:00 +2
+    start: 2025-05-06 07:00:00 +2
+    stop: 2025-05-06 09:00:00 +2
   - name: "Europe 1"
     url: http://stream.europe1.fr/europe1.aac
-    start: 2025-04-15 08:00:00 +2
-    stop: 2025-04-15 13:00:00 +2
-  - name: "France Bleu Azur"
-    url: http://direct.francebleu.fr/live/fbazur-midfi.mp3
-    start: 2025-04-15 08:00:00 +2
-    stop: 2025-04-15 13:00:00 +2
+    start: 2025-05-06 07:00:00 +2
+    stop: 2025-05-06 09:00:00 +2
   - name: "France Culture"
     url: http://icecast.radiofrance.fr/franceculture-hifi.aac
-    start: 2025-04-12 09:00:00 +2
-    stop: 2025-04-12 12:00:00 +2
+    start: 2025-05-06 06:30:00 +2
+    stop: 2025-05-06 09:00:00 +2
+  - name: "France Inter"
+    url: http://direct.franceinter.fr/live/franceinter-hifi.aac
+    start: 2025-05-06 07:00:00 +2
+    stop: 2025-05-06 10:00:00 +2
+  - name: "HitWest Rennes"
+    url: https://stream.rcs.revma.com/nvsuedfwcy3vv
+    start: 2025-05-06 06:00:00 +2
+    stop: 2025-05-06 09:00:00 +2
+  - name: "HitWest Nantes"
+    url: https://stream.rcs.revma.com/42hpctu59k3vv
+    start: 2025-05-06 06:00:00 +2
+    stop: 2025-05-06 09:00:00 +2
+  - name: "RTL"
+    url: http://streaming.radio.rtl.fr/rtl-1-44-128
+    start: 2025-05-06 07:00:00 +2
+    stop: 2025-05-06 10:00:00 +2
+  - name: "RMC FR"
+    url: https://audio.bfmtv.com/rmcradio_128.mp3
+    start: 2025-05-06 06:30:00 +2
+    stop: 2025-05-06 09:00:00 +2
   - name: "Nouvelle-Calédonie La Première"
     url: https://nouvelle-caledonie.ice.infomaniak.ch/nouvelle-caledonie-128.mp3
-    start: 2025-04-12 08:00:00 +11
-    stop: 2025-04-12 12:00:00 +11
+    start: 2025-05-05 20:00:00 +2
+    stop: 2025-05-05 23:00:00 +2
+  - name: "Ici Azur"
+    url: http://direct.francebleu.fr/live/fbazur-midfi.mp3
+    start: 2025-05-06 06:00:00 +2
+    stop: 2025-05-06 09:00:00 +2
+  - name: "Radio Classique"
+    url: https://str0.creacast.com/classique1
+    start: 2025-05-06 07:00:00 +2
+    stop: 2025-05-06 09:00:00 +2
+  - name: "BFM Business"
+    url: http://audio.bfmtv.com/bfmbusiness_128.mp3?aw_0_1st.playerId=BFMBusiness_audio_web&aggregator=BFMBusiness_audio_web
+    start: 2025-05-06 06:00:00 +2
+    stop: 2025-05-06 09:00:00 +2
